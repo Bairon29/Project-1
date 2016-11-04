@@ -1,0 +1,118 @@
+#mainContainer{
+width: 1100px;
+height: 700px;
+margin: 0 auto;
+box-shadow: 1px 2px 80px 30px yellow;
+background-color: red;
+background: url('images/cartoon.png');
+background-position: center;
+background-size: cover;
+position: relative;
+}
+
+.player{
+  position: absolute;
+  background-image: url('images/MasterChiefOriginal.png');
+  width: 100px;
+  height: 180px;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  transition-timing-function: linear;
+   top:  490px;
+  left: 500px;
+}
+
+#player{
+  transform: rotateY(180deg);
+}
+
+.bullet1{
+  position: absolute;
+  background-image: url('images/bullet.gif');
+  width: 223px;
+  height: 120px;
+  transition-timing-function: linear;
+  background-repeat: no-repeat;
+ background-position: -1105px -238px;
+}
+.bullet{
+  position: absolute;
+  background-image: url('images/bullet.gif');
+  width: 73px;
+  height: 50px;
+  transition-timing-function: linear;
+  background-repeat: no-repeat;
+ background-position: -225px -276px;
+}
+.zombie{
+    position: absolute;
+  background-image: url('images/zombie.gif');
+  width: 110px;
+  height: 200px;
+  transition-timing-function: linear;
+  background-repeat: no-repeat;
+ background-position: -120px -220px;
+
+}
+.zombieFinal{
+    position: absolute;
+  background-image: url('images/zombie.gif');
+  width: 100px;
+  height: 200px;
+  transition-timing-function: linear;
+  background-repeat: no-repeat;
+ /* background-position: -120px -220px; */
+ background-position: -460px 0px;
+transition: top .5s, left .5s;
+
+}
+.form1{
+background-position: -320px -220px;
+}
+
+.form2{
+  width: 90px;
+ background-position: -750px -220px;
+}
+
+.form3{
+  width: 120px;
+background-position: -850px -220px;
+}
+
+.player.walk4{
+ background-position: -621px 0px;
+}
+
+.final{
+background-position: -860px 0px;
+}
+
+#startGame{
+  background-color: red;
+  color: black;
+  text-align: center;
+width: 300px;
+height: 80px;
+position: absolute;
+left: 37%;
+top: 5%;
+}
+
+#startGame h1{
+  font-size: 160%;
+}
+
+#boss{
+   position: absolute;
+  background-image: url('images/bower.gif');
+  transform: rotateY(180deg);
+  width: 300px;
+  height: 260px;
+  background-repeat: no-repeat;
+  transition-timing-function: linear;
+   top:  440px;
+  left: 800px;
+  opacity: 0;
+}
+
