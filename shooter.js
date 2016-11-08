@@ -8,6 +8,7 @@ var active = false;
 var interval;
 var $body = $('body');
 var bulletOdj = new Object();
+//does not allow to get out side some dimentions
 var dimensionFunc = function(){
   if(this.posX < 20){
     this.posX = 20;
@@ -27,6 +28,7 @@ var dimensionFunc = function(){
   }
   return false;
 }
+//odject to keep track of player with its property
 var player =  {
 name: $('.player'),
   posX: 500,
@@ -36,7 +38,7 @@ name: $('.player'),
   direction: 'right',
   dimension: dimensionFunc
 };
-
+//odject to keep track of bowser with its property
 var bowser =  {
 name: $('#boss'),
   posX: 750,
@@ -45,7 +47,7 @@ name: $('#boss'),
   height1: 260,
   direction: 'left',
 };
-
+//odject to create local odject for zombies or bullet
 var obj = function(name, x, y, w, h){
 this.name = $(name);
 this.posX = x;
@@ -55,7 +57,7 @@ this.height1 = h;
 this.dimension = dimensionFunc;
 //this.burned = fireCollision;
 }
-
+//works like a destructor to initialize and odject that cannot exist
 var initialize = function(){
 this.name = '';
 this.posX = 0;
@@ -65,7 +67,7 @@ this.height1 = 0;
 this.dimension = dimensionFunc;
 }
 
-
+//change pics to animate player
 var walkAnimation = function(){
 
   var $walk = $('.player');
@@ -77,13 +79,15 @@ $walk.toggleClass('walk4');
 });
 
 };
-
+//zombie works to the left
 var zombieGoingLeft = function(direction){
  var count = 1;
+ //create local zombie with random position
   var thing = new obj('<div class="zombie"></div>'
     , Math.floor(Math.random()*(960 - 950)+950)
     , Math.floor(Math.random()*(516 - 418)+418), 100, 200);
   var $container = $('#mainContainer');
+  //pic needs to looks torwards the rigth direction
 if(direction === 'right'){
 thing.name.css('transform', 'rotateY(180deg)');
 }
@@ -96,6 +100,7 @@ thing.name.css('transform', 'rotateY(180deg)');
     thing.name.addClass('form'+count);
      count++;
     if(count >4){
+      //removes of the classes currently in zombie
 thing.name.removeClass('form1');
 thing.name.removeClass('form2');
 thing.name.removeClass('form3');
@@ -103,6 +108,7 @@ thing.name.removeClass('form4');
     clearInterval(stop);
 
   thing.name.removeAttr('class');
+  //after animation of raise up then starts to walk
   thing.name.addClass('zombieFinal');
 
 var stop11 = setInterval(function(){
@@ -110,7 +116,7 @@ thing.name.toggleClass('final');
 thing.posX-=10;
 thing.name.css('left', thing.posX);
 thing.dimension();
-
+//check if colladed with player
 if((thing.posX < player.posX + player.width1 - 20
   && thing.posX + thing.width1 - 20 > player.posX
   && thing.posY < player.posY + player.height1
@@ -127,6 +133,7 @@ if((thing.posX < player.posX + player.width1 - 20
   thing = new initialize();
 }
 else if(bulletCollision(thing, -10)){
+  //checks if zombie is ready tobe remove
   if(thing.name.children('.HIT').length === 3){
   clearInterval(stop11);
  thing.name.remove();
@@ -143,13 +150,15 @@ else if(bulletCollision(thing, -10)){
 
   },500);
 }
-
+//zombie works to the left
 var zombieGoingRight = function(direction){
  var count = 1;
+ //create local zombie with random position
   var thing = new obj('<div class="zombie"></div>'
     , Math.floor(Math.random()*(960 - 950)+10)
     , Math.floor(Math.random()*(516 - 418)+418), 100, 200);
   var $container = $('#mainContainer');
+  //pic needs to looks torwards the rigth direction
 if(direction === 'right'){
 thing.name.css('transform', 'rotateY(180deg)');
 }
@@ -162,6 +171,7 @@ thing.name.css('transform', 'rotateY(180deg)');
     thing.name.addClass('form'+count);
      count++;
     if(count >4){
+      //removes of the classes currently in zombie
 thing.name.removeClass('form1');
 thing.name.removeClass('form2');
 thing.name.removeClass('form3');
@@ -169,6 +179,7 @@ thing.name.removeClass('form4');
     clearInterval(stop);
 
   thing.name.removeAttr('class');
+   //after animation of raise up then starts to walk
   thing.name.addClass('zombieFinal');
 
 var stop1 = setInterval(function(){
@@ -176,7 +187,7 @@ thing.name.toggleClass('final');
 thing.posX+=10;
 thing.name.css('left', thing.posX);
 thing.dimension();
-
+//check if colladed with player
 if((thing.posX < player.posX + player.width1 - 20
   && thing.posX + thing.width1 - 20 > player.posX
   && thing.posY < player.posY + player.height1
@@ -194,7 +205,7 @@ if((thing.posX < player.posX + player.width1 - 20
 
 }
 else if(bulletCollision(thing, -10)){
-
+ //checks if zombie is ready tobe remove
   if(thing.name.children('.HIT').length === 3){
  clearInterval(stop1);
  thing.name.remove();
@@ -254,6 +265,7 @@ var threwFlame = function(fires){
 }
 
 var fireCollision = function(fireThrown){
+  //if fires touch player
 if((fireThrown.posX < player.posX + player.width1 - 10
   && fireThrown.posX + fireThrown.width1 - 10 > player.posX
   && fireThrown.posY < player.posY + player.height1
@@ -268,8 +280,7 @@ return false;
 var bigBoss = function(){
 active = true;
 bowser.name.css('opacity', '1');
-//bulletCollision(bowser);
-//var stop4 = setInterval(function(){
+//create fire
    if(bowser.name !== ''){
     var fire = new obj('<div id="fire" ></div>'
       ,bowser.posX +60, bowser.posY +30, 100, 120);
@@ -278,12 +289,6 @@ bowser.name.css('opacity', '1');
     $container.append(fire.name);
     threwFlame(fire);}
 
-    // fire.name.css('opacity', 1);
-    // fire.name.css({
-    //   'left': fire.posX+=10,
-    //   'top': fire.posY++
-    // });
-//},5000);
 }
 
 
