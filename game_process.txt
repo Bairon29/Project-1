@@ -1,0 +1,8 @@
+The game starts by showing the game story, above including a option to see game story or user story. It
+always says to press space to start the game logic. once the game starts player is in the middle of the
+field and a set amount of zombies start to raise up from the left and right side. player can move with
+arrows and shot with the Z key. When a zombie reaches the player, GameOver. User can try again
+by click a button that says try again. If zombie gets hitwith bullet a div with class of HIT of 3 divs are in
+that zombie then that zombie dies (.remove()). After all zombies are remove fews seconds pass
+and Bowser appears. Bowser shoots fire and if two fire hit player then gameover. But if a bullet hits
+Bowser 8 times then player wins. User can try again but clicking the button.
