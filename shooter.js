@@ -48,6 +48,7 @@ name: $('#boss'),
   direction: 'left',
 };
 //odject to create local odject for zombies or bullet
+//works like a constructor, influence by C++ experience
 var obj = function(name, x, y, w, h){
 this.name = $(name);
 this.posX = x;
@@ -222,38 +223,48 @@ else if(bulletCollision(thing, -10)){
 
   },500);
 }
-
+//bowser throws fire
 var threwFlame = function(fires){
+  //set time out is for bowser to wait after he appear a fews second to start shooting
   setTimeout(function(){
   var stop4 = setInterval(function(){
     if(bowser.name === ''){clearInterval(stop4);}
     if(bowser.name !== ''){
       fires.name.css('opacity', 1);
-
+//gets the fire to move
     fires.name.css({
       'left': fires.posX-=10,
       'top': fires.posY++
     });
   }
+  //if fire gets to the corner it reached the limmit
+  //boss is call again, is like a loop with condition
+  //but the no set amount of times just base on conditions
     if(fires.dimension()){
       clearInterval(stop4);
       fires.name.remove();
       fires = new initialize();
       bigBoss();
     }
+    //checks if fire burn the player
     else if(fireCollision(fires)){
+      //checks the player if it was it twice with fire
       if(player.name.children('.burn').length === 2){
+        //clears interval
         clearInterval(stop4);
+        //remove player/fire and initialize them
   player.name.remove();
   player = new initialize();
       fires.name.remove();
       fires = new initialize();
+      //loosing stage
        $('#mainContainer').html("");
   $('#mainContainer').css('background', "url('images/gameover.jpg')");
     $('#mainContainer').css('background-repeat', "no-repeat");
   $('#mainContainer').css('background-size', "cover");
   $('#try').css('opacity', '1');
 }else{
+  //start loop again
       clearInterval(stop4);
       fires.name.remove();
       fires = new initialize();
@@ -281,6 +292,7 @@ var bigBoss = function(){
 active = true;
 bowser.name.css('opacity', '1');
 //create fire
+//checks if bowser is still alive
    if(bowser.name !== ''){
     var fire = new obj('<div id="fire" ></div>'
       ,bowser.posX +60, bowser.posY +30, 100, 120);
@@ -296,6 +308,8 @@ bowser.name.css('opacity', '1');
 var bulletCollision = function(currentEnemy, off){
   if(Object.keys(bulletOdj).length > 0){
     console.log("enemies"+bulletOdj);
+    //checks for the current enemy zombie/bowser and
+    //checks if a bullet hit them
     for(var i in bulletOdj){
   if((currentEnemy.posX < bulletOdj[i].posX + bulletOdj[i].width1 + off
   && currentEnemy.posX + currentEnemy.width1 + off > bulletOdj[i].posX
@@ -315,23 +329,32 @@ return false;
 }
 
 var fireBulletRight = function(power){
+  //bullet towards the right side
+  //create bullet with "constructor"
 var currenBullet = new obj('<div class='+power+'></div>', player.posX+player.width1,
   player.posY + 17, 73, 50);
 currenBullet.name.removeAttr('id');
-
+//I was trying to avoid having to call function in so many different places
+//so create this object that hold the bullets being shot
+//however the get initialzed/remove so the object gets bigger
+//but with alot of initilize keys
+//I wished I have work with -> classes
 bulletOdj[Object.keys(bulletOdj).length] = currenBullet;
-
+//bullet position
 var $container = $('#mainContainer');
 $container.append(currenBullet.name);
 currenBullet.name.css({
   'left': currenBullet.posX,
   'top': currenBullet.posY
 });
+//this chech for key is stop being pressed
 $(document).keyup(function(event) {
   if(event.which === 90){
+    //Z key, animation for key
 $('#zKey').css('border', '0px');
 $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
   var stop = setInterval(function(){
+//bullet movement
     currenBullet.posX+=20;
     currenBullet.name.css('left', currenBullet.posX);
     if(active === true){
@@ -339,6 +362,7 @@ $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
       if(bowser.name.children('.HIT').length === 8){
         bowser.name.remove();
         bowser = new initialize();
+        //win stage
         $('#mainContainer').html("");
   $('#mainContainer').css('background', "url('images/win.png')");
     $('#mainContainer').css('background-repeat', "no-repeat");
@@ -357,27 +381,36 @@ $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
 });
 }
 var fireBulletLeft = function(power){
+    //bullet towards the left side
+  //create bullet with "constructor"
 var currenBullet = new obj('<div class='+power+'></div>', player.posX-73,
   player.posY + 17, 73, 50);
 currenBullet.name.attr('id', 'player');
-
+//I was trying to avoid having to call function in so many different places
+//so create this object that hold the bullets being shot
+//however the get initialzed/remove so the object gets bigger
+//but with alot of initilize keys
+//I wished I have work with -> classes
 bulletOdj[Object.keys(bulletOdj).length] = currenBullet;
 
-
+//bullet position
 var $container = $('#mainContainer');
 $container.append(currenBullet.name);
 currenBullet.name.css({
   'left': currenBullet.posX,
   'top': currenBullet.posY
 });
+//this chech for key is stop being pressed
 $(document).keyup(function(event) {
   if(event.which === 90){
+      //Z key, animation for key
 $('#zKey').css('border', '0px');
 $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
   var stop = setInterval(function(){
+    //bullet movement
     currenBullet.posX-=20;
     currenBullet.name.css('left', currenBullet.posX);
-// debugger;
+
     if(active === true){
  if(bulletCollision(bowser, -150)){
       if(bowser.name.children('.HIT').length === 8){
@@ -390,7 +423,6 @@ $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
 
     if(currenBullet.dimension()){
       currenBullet.name.remove();
-      // currenBullet = new initialize();
      clearInterval(stop);
     }
   },100);
@@ -400,10 +432,11 @@ $('#zKey').css('box-shadow', '0px 0px 0px 0px rgba(0,0,0,0)');
 
 
 
-
+//move player
 var movePlayer = function(){
   $(document).keydown(function(event) {
     if(event.which === 38){
+      //upwards, animation
        $('#upKey').css('border', '3px solid white');
     $('#upKey').css('box-shadow', '1px 2px 80px 30px black');
       console.log(event.which);
@@ -411,12 +444,14 @@ var movePlayer = function(){
       player.name.css('top', player.posY+'px');
     }
     if(event.which === 40){
+      //downwards, animation
        $('#downKey').css('border', '3px solid white');
     $('#downKey').css('box-shadow', '1px 2px 80px 30px black');
       player.posY+=6;
       player.name.css('top', player.posY+'px');
     }
     if(event.which === 39){
+      //right, animation
        $('#rightKey').css('border', '3px solid white');
     $('#rightKey').css('box-shadow', '1px 2px 80px 30px black');
         player.posX+=10;
@@ -426,6 +461,7 @@ var movePlayer = function(){
         walkAnimation();
     }
     if(event.which === 37){
+      //left, animation
        $('#leftKey').css('border', '3px solid white');
     $('#leftKey').css('box-shadow', '1px 2px 80px 30px black');
       player.posX-=10;
@@ -434,7 +470,9 @@ var movePlayer = function(){
        player.direction = 'left';
        walkAnimation();
     }
+    //checks if boss func was called
     if(active === true){
+      //checks if player touch bowser
 if((player.posX < bowser.posX + bowser.width1 - 140
   && player.posX + player.width1 - 140 > bowser.posX
   && player.posY < bowser.posY + bowser.height1
@@ -442,7 +480,7 @@ if((player.posX < bowser.posX + bowser.width1 - 140
   player.name.remove();
   player = new initialize();
 }}
-
+//removes animation to the arrows keys
 $(document).keyup(function(event) {
   if(event.which === 38){
       $('#upKey').css('border', '0px');
@@ -469,9 +507,11 @@ player.dimension();
 
 
 var amount = 0;
+//main caller
 var eventAsTheyHappen = function(){
 movePlayer();
 var stop =  setInterval(function(){
+  //space to start game
   $('#startGame').fadeOut(1000).fadeIn(1000);
   $(document).keydown(function(event) {
     if(event.which === 32){
@@ -482,11 +522,12 @@ var stop =  setInterval(function(){
   });
 },500)
 
+//click affect for game story
 $('#gameStory').click(function(event) {
   $('#game').css('opacity', '1');
   $('#user').css('opacity', '0');
 });
-
+//click affect for user story
 $('#userStory').click(function(event) {
   $('#user').css('opacity', '1');
   $('#game').css('opacity', '0');
@@ -495,6 +536,8 @@ $('#userStory').click(function(event) {
 $(document).keydown(function(event) {
   console.log(event.which);
     if(event.which === 32){
+      //when space is press
+      //hide gameStory/Userstory and all the content
       $('#gameStory').css('opacity', '0');
       $('#userStory').css('opacity', '0');
       $('#game').css('opacity', '0');
@@ -508,6 +551,7 @@ $(document).keydown(function(event) {
 
       var stop2 = setInterval(function(){
         if(amount < 6){
+          //raise of the zombies left  and right
   amount++;
 zombieGoingLeft('left');
 zombieGoingRight('right');
@@ -520,7 +564,7 @@ else{ clearInterval(stop2);
 }
 
   if(player.direction === 'right'){
-
+//animation for Z key
   if(event.which === 90){
     $('#zKey').css('border', '3px solid white');
     $('#zKey').css('box-shadow', '1px 2px 80px 30px black');
@@ -529,7 +573,7 @@ else{ clearInterval(stop2);
 }
 
  else if(player.direction === 'left'){
-
+//animation for Z key
   if(event.which === 90){
     $('#zKey').css('border', '3px solid white');
     $('#zKey').css('box-shadow', '1px 2px 80px 30px black');
@@ -544,7 +588,7 @@ else{ clearInterval(stop2);
 
 
 }
-
+//main event
 $(document).ready(function() {
   eventAsTheyHappen();
 });
